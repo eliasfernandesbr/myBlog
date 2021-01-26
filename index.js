@@ -3,10 +3,13 @@ const app = express(); //cria uma instância do express
 const bodyParser = require ("body-parser"); //Utilitário que serve para receber dados de qualquer formulário;
 const connect = require ("./database/connection");
 
+//IMPORTANDO CATEGORIES
+const categoriesController = require("./categories/categoriesController")
+
 //VIEW ENGINE
 app.set("view engine", "ejs");
 
-//STATIC
+//STATIC - PARA QUE O EXPRESS POSSA TRABALHAR COM ARQUIVOS ESTÁTICOS, CSS, IMAGEM ETC
 app.use(express.static("public"));
 
 //BODY PARSER
@@ -21,7 +24,9 @@ connect
     console.log("Conexão feita com sucesso");
 }).catch((error)=>{
     console.log(error);
-})
+});
+
+app.use("/", categoriesController);
 
 app.get("/", (req, res)=>{ //cria uma rota principal (home)
     res.render("index");
