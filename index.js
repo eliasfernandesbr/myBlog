@@ -5,6 +5,14 @@ const connect = require ("./database/connection");
 
 //IMPORTANDO CATEGORIES
 const categoriesController = require("./categories/categoriesController")
+const articlesController = require("./articles/articlesController")
+
+//BODY PARSER
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+
+const Article = require("./articles/article");
+const Category = require("./categories/category")
 
 //VIEW ENGINE
 app.set("view engine", "ejs");
@@ -12,9 +20,6 @@ app.set("view engine", "ejs");
 //STATIC - PARA QUE O EXPRESS POSSA TRABALHAR COM ARQUIVOS ESTÁTICOS, CSS, IMAGEM ETC
 app.use(express.static("public"));
 
-//BODY PARSER
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
 
 //DATABASE
 
@@ -26,7 +31,8 @@ connect
     console.log(error);
 });
 
-app.use("/", categoriesController);
+app.use("/categoriasPrefixo", categoriesController);
+app.use("/", articlesController);
 
 app.get("/", (req, res)=>{ //cria uma rota principal (home)
     res.render("index");
